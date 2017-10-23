@@ -93,13 +93,11 @@ public class BinarySearch {
         int[] whitelist = new In(args[0]).readAllInts();
         // 对白名单数组进行排序
         Arrays.sort(whitelist);
-        // 对白名单进行去重
-//        StdOut.println(Arrays.toString(whitelist));
-//        whitelist = unique(whitelist);
-//        StdOut.println(Arrays.toString(whitelist));
-        // 从标准输入读入 key，进行查找
-        while (!StdIn.isEmpty()) {
-            int key = StdIn.readInt();
+        // 在 Intellij Idea 下无法重定向标准输入，所以用文件模拟标准输入
+        // 读入 key，进行查找
+        In stdIn = new In("data/largeT.txt");
+        while (!stdIn.isEmpty()) {
+            int key = stdIn.readInt();
             // 如果第二个命令行参数为 "+"，则打印出不在白名单上的值
             if (args[1].equals("+")) {
                 if (rank(key, whitelist, false) == -1)
