@@ -8,11 +8,6 @@ public class SmartDate {
     private final int month;
     private final int day;
 
-    private static boolean isLeapYear(int year) {
-        // 年份可以被 4 整除但不能被 100 整除，或是年份可以被 400 整除
-        return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
-    }
-
     public SmartDate(int month, int day, int year) {
         // 判断日期是否合法
         if (!isLegalDate(month, day, year)) throw new RuntimeException("Illegal date!");
@@ -37,7 +32,7 @@ public class SmartDate {
         this.day = day;
     }
 
-    private boolean isLegalDate(int month, int day, int year) {
+    private static boolean isLegalDate(int month, int day, int year) {
         // 先判断年份是否合法
         if (year < 0) return false;
         // 然后判断是否为闰年，根据是否为闰年，后面判断 2 月份日期的合法性会有所不同
@@ -56,6 +51,11 @@ public class SmartDate {
             if (day > 30 || day < 1) return false;
         }
         return true;
+    }
+
+    private static boolean isLeapYear(int year) {
+        // 年份可以被 4 整除但不能被 100 整除，或是年份可以被 400 整除
+        return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
     }
 
     public int year() {

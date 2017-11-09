@@ -1,0 +1,4 @@
+// 假设 x.next = y
+x.next = t; // 第一行代码运行后，x.next = t
+t.next = x.next; // 因此，此处 t.next = x.next = t，而非 t.next = y
+// 所以在第一行代码运行前，需要保存 y 的引用

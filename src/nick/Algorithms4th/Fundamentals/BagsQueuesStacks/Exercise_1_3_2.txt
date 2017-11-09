@@ -1,0 +1,20 @@
+it
+it was
+it // was
+it the
+it the best
+it the // best
+it the of
+it the of times
+it the of // times
+it the // of
+it // the
+it it
+it it was
+it it // was
+it it the
+it it // the
+it // it
+
+out:
+was best times of the was the it (1 left on stack)
