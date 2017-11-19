@@ -1,0 +1,4 @@
+两个栈 stack1 和 stack2 ：
+Steque 的 push 和 pop 分别调用 stack1 的 push 和 pop
+Steque 的 enqueue 调用 stack2 的 push。
+当调用 pop 时 stack1 为空时，将 stack2 中的所有元素依次 pop 出来再 push 进 stack1 中。然后再执行 pop
