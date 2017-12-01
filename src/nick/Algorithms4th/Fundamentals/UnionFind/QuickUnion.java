@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import nick.Algorithms4th.myTools.Stopwatch;
 
-public class MyQuickUF {
+public class QuickUnion {
 
     /**
      * 触点数组，其中 a[i] 为第 i 个触点所在的连通分量的标识
@@ -16,7 +16,7 @@ public class MyQuickUF {
      */
     private int N;
 
-    public MyQuickUF(int N) {
+    public QuickUnion(int N) {
         /**
          * 初始化触点数组，其中 a[i] 有多种含义，当 a[i] = i 时，a[i] 代表触点 i 所在的连通分量的标识
          * 当 a[i] != i 时，a[i] 代表与触点 i 相连的触点 j 的索引
@@ -52,6 +52,21 @@ public class MyQuickUF {
     public int find(int p) {
         // 从触点 p 开始，沿网络寻找根触点，根触点的定义是 a[index] = index，即其指向自己
         int index = p;
+        int pointer;
+        while (true) {
+            pointer = a[index]; // <- 该赋值语句执行的次数 ∈ (1, N)
+            // 判断索引为 index 的触点是否是根触点
+            if (pointer == index) break;
+            // 不是根触点时，指向触点网络中的下一个节点
+            index = pointer;
+        }
+        // 综上，find() 方法对数组的访问次数 ∈ (1, N)
+        return index;
+    }
+
+    public int slowFind(int p) {
+        // 从触点 p 开始，沿网络寻找根触点，根触点的定义是 a[index] = index，即其指向自己
+        int index = p;
         while (a[index] != index) { // <- 判断执行的次数比下面的赋值多一次
             // 指向触点网络中的下一个节点
             index = a[index]; // <- 该赋值语句执行的次数 ∈ (0, N-1)
@@ -78,23 +93,6 @@ public class MyQuickUF {
         return N;
     }
 
-    private static void myTest() {
-        StdOut.print("请输入网络的大小：");
-        int N = StdIn.readInt();
-        MyUF uf = new MyUF(N);
-        for (int i = 0; ; i++) {
-            StdOut.print("请输入一对触点：");
-            int p = StdIn.readInt(), q = StdIn.readInt();
-            if (uf.connected(p, q)) {
-                StdOut.printf("%d 和 %d 是连通的。\n", p, q);
-            } else {
-                StdOut.printf("%d 和 %d 未连通，已建立连接。\n", p, q);
-                if (i < 10) uf.union(p, q);
-            }
-            StdOut.printf("现有连通分量数：%d\n", uf.count());
-        }
-    }
-
     private static void mainTest() {
         /**
          * 算法分析：
@@ -103,7 +101,7 @@ public class MyQuickUF {
         In stdIn = new In("data/1.5/largeUF.txt");
         int N = stdIn.readInt();
         Stopwatch timer = new Stopwatch();
-        MyQuickUF uf = new MyQuickUF(N);
+        QuickUnion uf = new QuickUnion(N);
         while (!stdIn.isEmpty()) {
             int p = stdIn.readInt(), q = stdIn.readInt();
             // connected() 方法执行 M 次，connected() 方法对数组的访问次数为 2*find，find ∈ (1, 2N-1)
@@ -114,14 +112,11 @@ public class MyQuickUF {
         }
         StdOut.printf("共有 %d 个连通分量\n", uf.count());
         StdOut.printf("共耗时 %f 秒\n", timer.elapsedTime());
-        // 综上，MyQuickUF 的增长数量级为 M * find
-    }
-
-    private static void doublingRatio() {
-
+        // 综上，QuickUnion 的增长数量级为 M * find
     }
 
     public static void main(String[] args) {
+        mainTest();
     }
 
 }

@@ -3,9 +3,10 @@ package nick.Algorithms4th.Fundamentals.UnionFind;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 import nick.Algorithms4th.myTools.Stopwatch;
 
-public class MyUF {
+public class QuickFind {
 
     /**
      * 触点数组，其中 a[i] 为第 i 个触点所在的连通分量的标识
@@ -16,7 +17,7 @@ public class MyUF {
      */
     private int N;
 
-    public MyUF(int N) {
+    public QuickFind(int N) {
         // 初始化触点数组，其中 a[i] 代表第 i 个触点所在的连通分量的标识。
         // 初始状态有 N 个连通分量
         a = new int[N];
@@ -74,10 +75,23 @@ public class MyUF {
         return N;
     }
 
+    public static double[] timeTrial(int[] scale) {
+        int N = scale[0], M = scale[1];
+        Stopwatch timer = new Stopwatch();
+        QuickUnion uf = new QuickUnion(N);
+        for (int i = 0; i < M; i++) {
+            // 使用随机生成的连接
+            int p = StdRandom.uniform(0, N), q = StdRandom.uniform(0, N);
+            if (uf.connected(p, q)) continue;
+            uf.union(p, q);
+        }
+        return new double[]{timer.elapsedTime()};
+    }
+
     private static void myTest() {
         StdOut.print("请输入网络的大小：");
         int N = StdIn.readInt();
-        MyUF uf = new MyUF(N);
+        QuickFind uf = new QuickFind(N);
         for (int i = 0; ; i++) {
             StdOut.print("请输入一对触点：");
             int p = StdIn.readInt(), q = StdIn.readInt();
@@ -99,7 +113,7 @@ public class MyUF {
         In stdIn = new In("data/1.5/largeUF.txt");
         int N = stdIn.readInt();
         Stopwatch timer = new Stopwatch();
-        MyUF uf = new MyUF(N);
+        QuickFind uf = new QuickFind(N);
         while (!stdIn.isEmpty()) {
             int p = stdIn.readInt(), q = stdIn.readInt();
             // connected() 方法执行 M 次，connected() 方法对数组的访问次数为 2 次
@@ -111,7 +125,7 @@ public class MyUF {
         }
         StdOut.printf("共有 %d 个连通分量\n", uf.count());
         StdOut.printf("共耗时 %f 秒\n", timer.elapsedTime());
-        // 综上，MyUF 的增长数量级约为 N^2
+        // 综上，QuickFind 的增长数量级约为 N^2
     }
 
     public static void main(String[] args) {

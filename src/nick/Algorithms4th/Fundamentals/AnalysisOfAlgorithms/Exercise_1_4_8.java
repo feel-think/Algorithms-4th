@@ -120,7 +120,8 @@ public class Exercise_1_4_8 {
         return -1;
     }
 
-    private static double timeTrial(int N) {
+    public static double[] timeTrial(int[] scale) {
+        int N = scale[0];
         // 产生一个长度为 N 的随机整型数组
         int[] a = getRandomArray(N);
         Stopwatch timer = new Stopwatch();
@@ -133,34 +134,17 @@ public class Exercise_1_4_8 {
             twoEqual(a);
             time += timer.elapsedTime();
         }
-        return time/n;
+        return new double[]{time/n};
     }
 
     private static void testTwoEqual() {
         int[] a = new int[]{1,1,1,1,2,2,3,4,4,5};
         StdOut.printf("\n数组 %s\n中共有 %d 个相等的整数对\n", Arrays.toString(a), twoEqual(a));
     }
-
-    private static void doublingRatioTest() {
-        // 先对 N = 125 进行实验，作为第一个参考结果
-        int N = 125;
-        double prev = timeTrial(N);
-        double time;
-        // 然后循环进行倍率实验，输出每次实验花费的时间，以及和上一次实验时间开销之比
-        StdOut.printf("%-16s %10s %5s\n", "N", "time(s)", "ratio");
-        while (true) {
-            N *= 2;
-            time = timeTrial(N);
-            // 规模 N , 花费的时间 , 与上一次时间之比
-            StdOut.printf("%-16d %10.2f %5.1f\n", N, time, time/prev);
-            prev = time;
-        }
-    }
     
     public static void main(String[] args) {
 //        bruteForceDoublingRatioTest();
 //        testTwoEqual();
-        doublingRatioTest();
     }
 
 }

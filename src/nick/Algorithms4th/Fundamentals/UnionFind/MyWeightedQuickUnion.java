@@ -5,7 +5,7 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import nick.Algorithms4th.myTools.Stopwatch;
 
-public class MyWeightedQU {
+public class MyWeightedQuickUnion {
 
     /** 触点数组，其中 id[i] 为第 i 个触点所在的连通分量的标识 */
     private int[] id;
@@ -14,7 +14,7 @@ public class MyWeightedQU {
     /** 连通分量数 */
     private int N;
 
-    public MyWeightedQU(int N) {
+    public MyWeightedQuickUnion(int N) {
         /**
          * 初始化触点数组和高度数组
          */
@@ -134,7 +134,7 @@ public class MyWeightedQU {
         In stdIn = new In("data/1.5/largeUF.txt");
         int N = stdIn.readInt();
         Stopwatch timer = new Stopwatch();
-        MyWeightedQU uf = new MyWeightedQU(N);
+        MyWeightedQuickUnion uf = new MyWeightedQuickUnion(N);
         while (!stdIn.isEmpty()) {
             int p = stdIn.readInt(), q = stdIn.readInt();
             // connected() 方法执行 M 次，connected() 方法对数组的访问次数为 2*find，find ∈ (1, log(N))
@@ -145,12 +145,13 @@ public class MyWeightedQU {
         }
         StdOut.printf("共有 %d 个连通分量\n", uf.count());
         StdOut.printf("共耗时 %f 秒\n", timer.elapsedTime());
-        // 综上，MyWeightedQU 的最坏增长数量级为 M*log(N)
+        // 综上，MyWeightedQuickUnion 的最坏增长数量级为 M*log(N)
     }
 
-    private static double[] timeTrial(int N, int M) {
+    public static double[] timeTrial(int[] scale) {
+        int N = scale[0], M = scale[1];
         Stopwatch timer = new Stopwatch();
-        MyWeightedQU uf = new MyWeightedQU(N);
+        MyWeightedQuickUnion uf = new MyWeightedQuickUnion(N);
         for (int i = 0; i < M; i++) {
             // 使用随机生成的连接
             int p = StdRandom.uniform(0, N), q = StdRandom.uniform(0, N);
@@ -161,29 +162,8 @@ public class MyWeightedQU {
         return new double[]{time, uf.count(), uf.maxHeight(), uf.averageDepth()};
     }
 
-    public static void doublingRatio() {
-        // 对不同的触点数 N 和 连接数 M，进行实验，记录时间，计算时间比
-        // 选取 M = 2 * N
-        int N = 125, r = 2;
-        // 计算第一个参考时间
-        double[] result = timeTrial(N, r*N);
-        double prev = result[0];
-        double time;
-        int count;
-        StdOut.printf("%-16s %10s %10s %5s %5s %6s\n", "N", "time(s)", "count", "ratio", "maxHeight", "avgDepth");
-        while (true) {
-            N *= 2;
-            result = timeTrial(N, r*N);
-            time = result[0];
-            count = (int) result[1];
-            // 规模 N , 花费的时间 , 分量个数，与上一次时间之比
-            StdOut.printf("%-16d %10.2f %10d %5.1f %5d %6.1f\n", N, time, count, time/prev, (int) result[2], result[3]);
-            prev = time;
-        }
-    }
-
     public static void main(String[] args) {
-        doublingRatio();
+
     }
 
 }
